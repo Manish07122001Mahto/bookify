@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { initializeApp } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -9,20 +8,11 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { firebaseApp } from "../../Firebase.config.js";
 
 const FirebaseContext = createContext(null);
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAmBIJuuXQ1w_N3H2FF_ePzeHr4Go7XYpw",
-  authDomain: "bookify-21313.firebaseapp.com",
-  projectId: "bookify-21313",
-  storageBucket: "bookify-21313.firebasestorage.app",
-  messagingSenderId: "85050208531",
-  appId: "1:85050208531:web:26e92ae1246a0fd4f0eae6",
-};
-
 export const useFirebase = () => useContext(FirebaseContext);
-const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 const firestore = getFirestore(firebaseApp);
@@ -48,7 +38,9 @@ export const FirebaseProvider = (props) => {
     signInWithPopup(firebaseAuth, googleProvider);
   };
   const isLoggedIn = user ? true : false;
-  const addListing = (name, isbn, price, cover) => {};
+  const addListing = (name, isbn, price, cover) => {
+    //TODO: complete the definition
+  };
   return (
     <FirebaseContext.Provider
       value={{ signup, signin, signinWithGoogle, isLoggedIn, addListing }}
