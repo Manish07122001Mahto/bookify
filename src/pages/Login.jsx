@@ -42,7 +42,7 @@ function Login() {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Signin
         </Button>
       </Form>
       <h1 className="mt-5 mb-5">OR</h1>

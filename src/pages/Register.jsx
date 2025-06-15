@@ -45,7 +45,7 @@ function Register() {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Signup
         </Button>
       </Form>
     </div>
