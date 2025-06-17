@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { useFirebase } from "../context/Firebase.jsx";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
 
 function ListPage() {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ function ListPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await firebase.addListing(name, isbnNumber, PeriodicWave, coverPic);
+    const url = await uploadToCloudinary(coverPic);
+    await firebase.addListing(name, isbnNumber, price, url);
   };
 
   return (
@@ -51,8 +53,8 @@ function ListPage() {
           <Form.Label>Cover Image</Form.Label>
           <Form.Control
             type="file"
-            onChange={(e) => setCoverPic(e.target.value[0])}
-            value={price}
+            accept="image/*"
+            onChange={(e) => setCoverPic(e.target.files[0])}
           />
         </Form.Group>
         <Button variant="primary" type="submit">

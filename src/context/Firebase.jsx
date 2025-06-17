@@ -7,7 +7,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 import { firebaseApp } from "../../Firebase.config.js";
 
 const FirebaseContext = createContext(null);
@@ -38,12 +38,33 @@ export const FirebaseProvider = (props) => {
     signInWithPopup(firebaseAuth, googleProvider);
   };
   const isLoggedIn = user ? true : false;
-  const addListing = (name, isbn, price, cover) => {
-    //TODO: complete the definition
+
+  const addListing = async (name, isbn, price, url) => {
+    return await addDoc(collection(firestore, "books"), {
+      name,
+      isbn,
+      price,
+      url,
+      userID: user.uid,
+      userEmail: user.email,
+      displayName: user.displayName,
+      photoUrl: user.photoURL,
+    });
+  };
+
+  const listAllBooks = async () => {
+    return getDocs(collection(firestore, "books"));
   };
   return (
     <FirebaseContext.Provider
-      value={{ signup, signin, signinWithGoogle, isLoggedIn, addListing }}
+      value={{
+        signup,
+        signin,
+        signinWithGoogle,
+        isLoggedIn,
+        addListing,
+        listAllBooks,
+      }}
     >
       {props.children}
     </FirebaseContext.Provider>
