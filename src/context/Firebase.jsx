@@ -7,7 +7,16 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+} from "firebase/firestore";
 import { firebaseApp } from "../../Firebase.config.js";
 
 const FirebaseContext = createContext(null);
@@ -55,6 +64,40 @@ export const FirebaseProvider = (props) => {
   const listAllBooks = async () => {
     return getDocs(collection(firestore, "books"));
   };
+
+  const getBookById = async (id) => {
+    const docRef = doc(firestore, "books", id);
+    const result = getDoc(docRef);
+    return result;
+  };
+
+  const placeOrder = async (bookId, qty) => {
+    const collectionRef = collection(firestore, "books", bookId, "orders");
+    const result = await addDoc(collectionRef, {
+      userID: user.uid,
+      userEmail: user.email,
+      displayName: user.displayName,
+      photoUrl: user.photoURL,
+      qty: Number(qty),
+    });
+    return result;
+  };
+
+  const fetchMyBooks = async () => {
+    if (!user) {
+      return;
+    }
+    const collectRef = collection(firestore, "books");
+    const q = query(collectRef, where("userID", "==", user.uid));
+    const result = await getDocs(q);
+    return result;
+  };
+
+  const getOrders = async (bookId) => {
+    const collectionRef = collection(firestore, "books", bookId, "orders");
+    const result = await getDocs(collectionRef);
+    return result;
+  };
   return (
     <FirebaseContext.Provider
       value={{
@@ -64,6 +107,10 @@ export const FirebaseProvider = (props) => {
         isLoggedIn,
         addListing,
         listAllBooks,
+        getBookById,
+        placeOrder,
+        fetchMyBooks,
+        getOrders,
       }}
     >
       {props.children}

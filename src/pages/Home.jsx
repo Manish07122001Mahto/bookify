@@ -13,7 +13,12 @@ function Home() {
     <div className="container mt-5">
       <CardGroup>
         {books.map((book, index) => (
-          <BookCard {...book.data()} key={index} />
+          <BookCard
+            {...book.data()}
+            id={book.id}
+            key={index}
+            link={`/book/view/${book.id}`}
+          />
         ))}
       </CardGroup>
     </div>

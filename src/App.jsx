@@ -11,6 +11,9 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ListPage from "./pages/List";
 import Home from "./pages/Home";
+import BookDetail from "./pages/Detail";
+import ViewOrder from "./pages/ViewOrder";
+import ViewOrdersDetail from "./pages/ViewOrdersDetail";
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/book/list" element={<ListPage />} />
+        <Route path="/book/view/:bookId" element={<BookDetail />} />
+        <Route path="/book/orders" element={<ViewOrder />} />
+        <Route path="/books/orders/:bookId" element={<ViewOrdersDetail />} />
       </Routes>
     </div>
   );
